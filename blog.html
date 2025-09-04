@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: Unique Title Tag for the Blog page -->
+    <title>Uburiza Solutions Blog | Insights & Trends</title>
+    <!-- SEO: Unique Meta Description for the Blog page -->
+    <meta name="description" content="Stay up-to-date with the latest insights, trends, and success stories in digital marketing and tech. The Uburiza Solutions blog is your guide to innovation.">
+    <!-- Links to the global stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1>Our Latest Insights & Articles</h1>
+            
+            <p id="blog-intro-text">
+                Welcome to the Uburiza blog, where we share our expertise, analyze industry trends, and provide valuable tips to help your business grow.
+            </p>
+
+            <section id="blog-posts-section">
+                <!-- Blog posts will be dynamically loaded here by JavaScript -->
+                <div id="blog-post-list" class="blog-post-list">
+                    <!-- Blog posts will be inserted here by JavaScript -->
+                </div>
+                
+                <div id="blog-post-detail" class="blog-post-detail">
+                    <h2 id="post-detail-title"></h2>
+                    <p id="post-detail-content"></p>
+                    <a href="#" id="back-to-blog" class="btn">Back to All Posts</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Uburiza Solutions. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db, auth, userId;
+
+        async function setupFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                userId = auth.currentUser.uid;
+                loadBlogPosts();
+            } catch (error) {
+                console.error("Firebase setup failed:", error);
+            }
+        }
+
+        async function loadBlogPosts() {
+            const blogPostsRef = collection(db, `/artifacts/${appId}/public/data/blogs`);
+            onSnapshot(blogPostsRef, (snapshot) => {
+                const postListElement = document.getElementById('blog-post-list');
+                postListElement.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    postListElement.innerHTML = '<p>No blog posts found. Check the admin dashboard to add some!</p>';
+                    return;
+                }
+                
+                snapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('card');
+                    postElement.innerHTML = `
+                        <h3>${post.title}</h3>
+                        <p>${post.summary}</p>
+                        <a href="#" class="internal-link read-more" data-id="${doc.id}">Read More &rarr;</a>
+                    `;
+                    postListElement.appendChild(postElement);
+                });
+
+                // Attach event listeners to the new "Read More" links
+                document.querySelectorAll('.read-more').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const postId = e.target.getAttribute('data-id');
+                        showBlogPostDetail(postId);
+                    });
+                });
+            });
+        }
+
+        async function showBlogPostDetail(postId) {
+            const docRef = doc(db, `/artifacts/${appId}/public/data/blogs`, postId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const post = docSnap.data();
+                document.getElementById('post-detail-title').textContent = post.title;
+                document.getElementById('post-detail-content').textContent = post.content;
+                
+                document.getElementById('blog-post-list').style.display = 'none';
+                document.getElementById('blog-intro-text').style.display = 'none';
+                document.getElementById('blog-post-detail').style.display = 'block';
+            } else {
+                console.error("No such document!");
+            }
+        }
+        
+        document.getElementById('back-to-blog').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('blog-post-list').style.display = 'grid';
+            document.getElementById('blog-intro-text').style.display = 'block';
+            document.getElementById('blog-post-detail').style.display = 'none';
+        });
+
+        setupFirebase();
+    </script>
+</body>
+</html>

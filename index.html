@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: Title Tag -->
+    <title>Digital Solutions for Rwandan Businesses | Uburiza Solutions</title>
+    <!-- SEO: Meta Description -->
+    <meta name="description" content="Uburiza Solutions empowers startups and SMEs in Rwanda with digital marketing, tech training, AI integration, and system automation to help them grow and succeed.">
+    <!-- Links to the global stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- SEO: Inter font for readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1>Uburiza Solutions: Empowering Businesses in Rwanda</h1>
+            
+            <p>
+                We provide tailored digital solutions to help Rwandan startups and SMEs thrive in the digital era. Our expertise spans digital marketing, tech training, AI integration, and systems automation.
+            </p>
+
+            <section id="services-intro">
+                <h2>Our Core Services</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Digital Marketing</h3>
+                        <p>We craft data-driven marketing strategies to expand your reach and engage your audience effectively.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Tech Training</h3>
+                        <p>We equip your team with the skills needed to master modern tools and technologies for business growth.</p>
+                    </div>
+                    <div class="card">
+                        <h3>AI & Automation</h3>
+                        <p>We integrate intelligent systems to streamline your operations, reduce costs, and enhance productivity.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="testimonials">
+                <h2>What Our Clients Say</h2>
+                <div class="card-grid">
+                    <div class="card testimonial-card">
+                        <p>"Uburiza Solutions transformed our online presence. Their expertise in social media management helped us reach a wider audience than ever before."</p>
+                        <cite>- Eric Nsengiyumva, CEO, TechGrow</cite>
+                    </div>
+                    <div class="card testimonial-card">
+                        <p>"The tech training workshops were invaluable for our team. We now have the skills to implement powerful new strategies on our own."</p>
+                        <cite>- Alice Uwase, Marketing Director, Kazi Digital</cite>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faqs">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>What makes your services unique?</h3>
+                        <div class="faq-answer">
+                            <p>We focus on a data-driven approach and provide customized solutions that are specifically designed for the Rwandan market. We don't just provide a service; we build a partnership with your business.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How can tech training benefit my business?</h3>
+                        <div class="faq-answer">
+                            <p>Investing in tech training empowers your employees to use new tools efficiently, enhances productivity, and keeps your company competitive in a fast-paced digital world. It is a long-term investment in your team's capabilities.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Do you work with startups and small businesses?</h3>
+                        <div class="faq-answer">
+                            <p>Yes, we specialize in helping startups and SMEs. We understand the unique challenges they face and offer scalable, affordable solutions to help them grow from the ground up.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Uburiza Solutions. All Rights Reserved.</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item h3');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const parent = item.parentElement;
+                    parent.classList.toggle('open');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
